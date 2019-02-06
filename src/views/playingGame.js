@@ -105,9 +105,9 @@ class PlayingGame extends Component {
                 </ul>
 
                 <section className="group">
-                    <button onClick={removeLife} className="btn is-white">Remove<i/></button>
+                    <button onClick={removeLife} className="btn is-white">-1 life<i/></button>
                     <button onClick={nextPlayer} className="btn is-black">Next</button>
-                    <button onClick={addLife} className="btn is-white">Add</button>
+                    <button onClick={addLife} className="btn is-white">+1 life</button>
                 </section>
             </section>
         );
