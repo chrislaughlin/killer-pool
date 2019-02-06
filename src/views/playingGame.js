@@ -8,10 +8,12 @@ class PlayingGame extends Component {
         playerName: ''
     };
 
+    _newPlayer = null;
+
     handleKeyPress = (event) => {
         if(event.key == 'Enter'){
             this.props.addPlayer(this.state.playerName);
-            this.setState({showInput: false});
+            this.setState({showInput: false, playerName: ''});
         }
     };
 
@@ -51,7 +53,12 @@ class PlayingGame extends Component {
                         !showInput &&
                         <button
                             className="btn is-tertiary"
-                            onClick={() => this.setState({showInput: true})}
+                            onClick={() => {
+                                this.setState({showInput: true})
+                                setTimeout(() => {
+                                    this._newPlayer.focus();
+                                }, 300);
+                            }}
                         >
                             Add
                         </button>
@@ -62,21 +69,25 @@ class PlayingGame extends Component {
                 <ul className="row">
                     {
                         playersWithInout.map((player, index) => {
+                            if (!player) {
+                                return;
+                            }
                             if (player.showInput) {
                                 return (
                                     <li
-                                        className="new-player"
+                                        className="new-player col-xs-12"
                                     >
                                         <input
                                             className="add-player-name"
                                             value={playerName}
                                             onKeyPress={this.handleKeyPress}
                                             onChange={this.updateInput}
+                                            ref={el => this._newPlayer = el}
                                         />
                                     </li>
                                 );
                             } else {
-                                let className = 'col-xs-12 col-md-6 ';
+                                let className = 'col-xs-12 col-md-6 col-xl-4';
                                 className = `${className} ${currentPlayerIndex === index && 'current'}`;
                                 className = `${className} ${player.lives === 0 && 'out'}`;
                                 return (

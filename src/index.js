@@ -19,12 +19,7 @@ class App extends Component {
 
     state = {
         currentView: GAME_STATES.newGame,
-        players: [
-            {name: 'Chris', lives: 3},
-            {name: 'Jonny', lives: 3},
-            {name: 'Paul', lives: 3},
-            {name: 'Rory', lives: 3},
-        ],
+        players: [],
         currentPlayerIndex: 0
     };
 
@@ -49,7 +44,9 @@ class App extends Component {
                     oldState.currentPlayerIndex ===
                     oldState.players.length - 1
                         ? 0
-                        : oldState.currentPlayerIndex + 1
+                        : oldState.players[oldState.currentPlayerIndex + 1].lives === 0 ?
+                        oldState.currentPlayerIndex + 2 :
+                        oldState.currentPlayerIndex + 1
             };
         });
     };

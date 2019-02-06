@@ -7,15 +7,7 @@ const NewGame = ({
     return (
         <section className="content">
             <div className="logo">
-                <img src={Logo} alt=""/>
-            </div>
-            <div className="start">
-                <a
-                    onClick={onStartGame}
-                    className="btn is-black"
-                >
-                    Start Game
-                </a>
+                <img src={Logo} alt="" onClick={onStartGame}/>
             </div>
         </section>
 
