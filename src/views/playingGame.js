@@ -21,7 +21,11 @@ class PlayingGame extends Component {
 
     render() {
         const {
-            players
+            players,
+            nextPlayer,
+            currentPlayerIndex,
+            addLife,
+            removeLife
         } = this.props;
 
         const {
@@ -57,21 +61,29 @@ class PlayingGame extends Component {
 
                 <ul className="row">
                     {
-                        playersWithInout.map(player => {
+                        playersWithInout.map((player, index) => {
                             if (player.showInput) {
                                 return (
-                                    <input
-                                        className="player-add-name"
-                                        value={playerName}
-                                        onKeyPress={this.handleKeyPress}
-                                        onChange={this.updateInput}
-                                    />
+                                    <li
+                                        className="new-player"
+                                    >
+                                        <input
+                                            className="add-player-name"
+                                            value={playerName}
+                                            onKeyPress={this.handleKeyPress}
+                                            onChange={this.updateInput}
+                                        />
+                                    </li>
                                 );
                             } else {
+                                let className = 'col-xs-12 col-md-6 ';
+                                className = `${className} ${currentPlayerIndex === index && 'current'}`;
+                                className = `${className} ${player.lives === 0 && 'out'}`;
                                 return (
                                     <li
                                         data-count={player.lives}
-                                        className="col-xs-12 col-md-6">
+                                        className={className}
+                                    >
                                         {player.name}
                                     </li>
                                 )
@@ -80,19 +92,11 @@ class PlayingGame extends Component {
                         })
                     }
                 </ul>
-                {/*<div>*/}
-                {/*<input/>*/}
-                {/*<a*/}
-                {/*className="btn is-black"*/}
-                {/*>*/}
-                {/*ADD*/}
-                {/*</a>*/}
-                {/*</div>*/}
 
                 <section className="group">
-                    <a href="" className="btn is-white">Remove<i/></a>
-                    <a href="" className="btn is-black">Next</a>
-                    <a href="" className="btn is-white">Add</a>
+                    <button onClick={removeLife} className="btn is-white">Remove<i/></button>
+                    <button onClick={nextPlayer} className="btn is-black">Next</button>
+                    <button onClick={addLife} className="btn is-white">Add</button>
                 </section>
             </section>
         );

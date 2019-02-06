@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
 
-import './css/build.min.css';
+import './css/build.css';
+import './css/more.css';
 
 import KillerContainer from "./killerContainer";
 import NewGame from './views/newGame';
@@ -23,7 +24,8 @@ class App extends Component {
             {name: 'Jonny', lives: 3},
             {name: 'Paul', lives: 3},
             {name: 'Rory', lives: 3},
-        ]
+        ],
+        currentPlayerIndex: 0
     };
 
     onStartGame = () => this.setState({currentView: GAME_STATES.playingGame});
@@ -40,14 +42,71 @@ class App extends Component {
         })
     };
 
+    nextPlayer = () => {
+        this.setState(oldState => {
+            return {
+                currentPlayerIndex:
+                    oldState.currentPlayerIndex ===
+                    oldState.players.length - 1
+                        ? 0
+                        : oldState.currentPlayerIndex + 1
+            };
+        });
+    };
+
+    addLife = () => {
+        this.setState(oldState => {
+            return {
+                players: oldState.players.map((player, index) => {
+                    if (index === oldState.currentPlayerIndex) {
+                        return {
+                            ...player,
+                            lives: player.lives + 1
+                        }
+                    } else {
+                        return player;
+                    }
+                })
+            }
+        })
+    };
+
+    removeLife = () => {
+        this.setState(oldState => {
+            return {
+                players: oldState.players.map((player, index) => {
+                    if (index === oldState.currentPlayerIndex) {
+                        return {
+                            ...player,
+                            lives: player.lives !== 0 ? player.lives - 1 : 0
+                        }
+                    } else {
+                        return player;
+                    }
+                })
+            }
+        })
+    };
+
     getCurrentView = (currentView, players) => {
         switch (currentView) {
             case GAME_STATES.newGame:
                 return <NewGame onStartGame={this.onStartGame}/>;
             case GAME_STATES.playingGame:
-                return <PlayingGame players={players} addPlayer={this.addPlayer}/>;
+                return (
+                    <PlayingGame
+                        players={players}
+                        addPlayer={this.addPlayer}
+                        nextPlayer={this.nextPlayer}
+                        currentPlayerIndex={this.state.currentPlayerIndex}
+                        addLife={this.addLife}
+                        removeLife={this.removeLife}
+                    />
+                );
         }
     };
+
+
 
     render() {
         const {
