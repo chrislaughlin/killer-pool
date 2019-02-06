@@ -14,7 +14,7 @@ const NewGame = ({
                     onClick={onStartGame}
                     className="btn is-black"
                 >
-                    Play
+                    Start Game
                 </a>
             </div>
         </section>

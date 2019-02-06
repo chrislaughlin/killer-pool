@@ -7,8 +7,6 @@ import KillerContainer from "./killerContainer";
 import NewGame from './views/newGame';
 import PlayingGame from './views/playingGame';
 
-import Logo from './img/logo.png';
-
 const GAME_STATES = {
     newGame: 'NEW_GAME',
     addPlayers: 'ADD_PLAYERS',
@@ -19,24 +17,42 @@ const GAME_STATES = {
 class App extends Component {
 
     state = {
-        currentView: GAME_STATES.newGame
+        currentView: GAME_STATES.newGame,
+        players: [
+            {name: 'Chris', lives: 3},
+            {name: 'Jonny', lives: 3},
+            {name: 'Paul', lives: 3},
+            {name: 'Rory', lives: 3},
+        ]
     };
 
     onStartGame = () => this.setState({currentView: GAME_STATES.playingGame});
 
-    getCurrentView = currentView => {
+    addPlayer = name => {
+        this.setState({
+            players: [
+                ...this.state.players,
+                {
+                    name,
+                    lives: 3
+                }
+            ]
+        })
+    };
+
+    getCurrentView = (currentView, players) => {
         switch (currentView) {
             case GAME_STATES.newGame:
                 return <NewGame onStartGame={this.onStartGame}/>;
             case GAME_STATES.playingGame:
-                return <PlayingGame/>;
+                return <PlayingGame players={players} addPlayer={this.addPlayer}/>;
         }
     };
 
-
     render() {
         const {
-            currentView
+            currentView,
+            players
         } = this.state;
 
         return (
@@ -52,7 +68,7 @@ class App extends Component {
                     <span className="break-line"/>
 
                         {
-                            this.getCurrentView(currentView)
+                            this.getCurrentView(currentView, players)
                         }
                 </section>
             </div>
